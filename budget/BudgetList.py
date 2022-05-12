@@ -26,13 +26,13 @@ class BudgetList ():
 
     
     def __iter__(self):
-       iter(self.expenses)
+       self.iter_e = iter(self.expenses)
        self.iter_o = iter(self.overages)
        return(self)
 
     def __next__(self):
         try:
-            return (next(self.iter_o))
+            return (next(self.iter_e))
         except:
             StopIteration
             return(next(self.iter_o))
@@ -60,7 +60,7 @@ def main():
      values = [myBudgetList.sum_expenses,myBudgetList.sum_overages,myBudgetList.budget]
 
      ax.bar(labels,values,color=['green','red','blue'])
-     ax.set_title("Your total expenses vs total budget")
+     ax.set_title("Your total expenses vs total budget ")
 
      plt.show()
 if __name__ == "__main__":
