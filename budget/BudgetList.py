@@ -1,28 +1,41 @@
+from re import M
+from tracemalloc import stop
 from pip import main
 from . import Expense
+import matplotlib.pyplot as plt
 
-class BudgetList():
-    def __init__(self, budget):
-         self.budget = budget
-         self.sum_expenses = 0
-         self.expenses = []
-         self.sum_overages = 0
-         self.overages = []
+import budget
+class BudgetList ():
+    def __init__(self,budget):
+        self.budget = budget
+        self.sum_expenses = 0
+        self.expenses = []
+        self.sum_overages = 0
+        self.overages = []
+        
+    def append(self, item):
+        if (self.sum_expenses + item < self.budget):
+            self.expenses.append(item)
+            self.sum_expenses += item
+        else:
+            self.overages.append(item)
+            self.sum_overages += item
 
     def __len__(self):
-         return (len(self.expenses) + len(self.overages))
+        return (len(self.expenses) + len(self.overages))
 
-     # implement append so that it only appends to self if total < budget
-    def append(self, item):
-         # TODO Check if item is a number
-         if (self.sum_expenses+item < self.budget):
-             self.expenses.append(item)
-             self.sum_expenses += item
-         # Otherwise append to the overages list and add to the overage total
-         else:
-             self.overages.append(item)
-             self.sum_overages+=item
+    
+    def __iter__(self):
+       iter(self.expenses)
+       self.iter_o = iter(self.overages)
+       return(self)
 
+    def __next__(self):
+        try:
+            return (next(self.iter_o))
+        except:
+            StopIteration
+            return(next(self.iter_o))
 
 
 def main():
@@ -37,9 +50,18 @@ def main():
 
      # Test len()
      print('The count of all expenses: ' + str(len(myBudgetList)))
+     
+     for entry in myBudgetList:
+            print(entry)
 
 
+     fig,ax = plt.subplots()
+     labels = ['Expenses','Overages','Budget']
+     values = [myBudgetList.sum_expenses,myBudgetList.sum_overages,myBudgetList.budget]
 
+     ax.bar(labels,values,color=['green','red','blue'])
+     ax.set_title("Your total expenses vs total budget")
 
+     plt.show()
 if __name__ == "__main__":
     main()
